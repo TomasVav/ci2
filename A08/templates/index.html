@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChEMBL Compound Search</title>
+</head>
+<body>
+
+    <h1>ChEMBL Compound Search</h1>
+
+    <form method="POST">
+        <label for="smiles">Enter SMILES:</label>
+
+        <input type="text" id="smiles" name="smiles"
+               value="{{ smiles }}" required>
+
+        <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    {% if compound %}
+        <h2>Compound information</h2>
+
+        {% if compound.preferred_name %}
+    <p>Name: {{ compound.preferred_name }}</p>
+{% elif compound.molecule_synonyms %}
+    <p>Name: {{ compound.molecule_synonyms[0].molecule_synonym }}</p>
+{% else %}
+    <p>Name: Not available</p>
+{% endif %}
+        <p>ChEMBL ID: {{ compound.molecule_chembl_id }}</p>
+        <p>Molecule type: {{ compound.molecule_type }}</p>
+
+        {% if compound.molecule_properties %}
+
+            <p>Molecular formula:
+                {{ compound.molecule_properties.full_molformula }}</p>
+
+            <p>Molecular weight:
+                {{ compound.molecule_properties.full_mwt }} g/mol</p>
+
+            <p>LogP:
+                {{ compound.molecule_properties.alogp }}</p>
+
+            <p>Hydrogen bond donors:
+                {{ compound.molecule_properties.hbd }}</p>
+
+            <p>Hydrogen bond acceptors:
+                {{ compound.molecule_properties.hba }}</p>
+
+        {% endif %}
+
+        {% if compound.molecule_structures %}
+            <p>Canonical SMILES:
+                {{ compound.molecule_structures.canonical_smiles }}</p>
+        {% endif %}
+
+    {% endif %}
+
+</body>
+</html>
